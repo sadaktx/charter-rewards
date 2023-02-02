@@ -18,7 +18,7 @@ import org.mockito.junit.jupiter.MockitoExtension;
 
 import com.ss.charterrewards.entity.Customer;
 import com.ss.charterrewards.entity.CustomerTransaction;
-import com.ss.charterrewards.rewards.CustomerJpaRepository;
+import com.ss.charterrewards.rewards.CustomerRepository;
 import com.ss.charterrewards.rewards.RewardsService;
 
 @ExtendWith(MockitoExtension.class)
@@ -27,7 +27,7 @@ public class RewardsServiceMockTest {
 	@InjectMocks
 	private RewardsService rewardsService;
 	@Mock
-	private CustomerJpaRepository customerRpository;
+	private CustomerRepository customerRpository;
 	
 	private List<Customer> customers;
 	private List<CustomerTransaction> customerTransactions;

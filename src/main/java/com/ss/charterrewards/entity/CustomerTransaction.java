@@ -11,6 +11,13 @@ import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Transient;
 
+/**
+* CustomerTransaction represents a single transaction that a customer made
+* It has a Many to One relationship with the Customer entity
+* 
+* @author Sadak Shaik
+* 
+*/
 @Entity
 public class CustomerTransaction {
 	@Id
@@ -71,15 +78,13 @@ public class CustomerTransaction {
 	}
 	
 	public Long getRewardPoints() {
-		this.rewardPoints = 0L;
-		if (this.amount > 100) {
-			this.rewardPoints = 50 + (this.amount - 100) * 2;
-		} else if (this.amount > 50 && this.amount <= 100){
-			this.rewardPoints = (this.amount - 50);
-		}
-		return this.rewardPoints;
+		return rewardPoints;
 	}
 	
+	public void setRewardPoints(Long rewardPoints) {
+		this.rewardPoints = rewardPoints;
+	}
+
 	@Override
 	public String toString() {
 		return "CustomerTransaction [id=" + id + ", customer=" + customer + ", description=" + description + ", transactionDate=" + transactionDate

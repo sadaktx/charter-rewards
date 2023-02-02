@@ -11,8 +11,15 @@ import jakarta.persistence.Id;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.Transient;
 
+/**
+* Customer is the main entity that will have the Customer information
+* It has a One to Many relationship with the Customer Transactions entity
+* 
+* @author Sadak Shaik
+* 
+*/
 @Entity
-public class Customer implements ICustomerRewards {
+public class Customer {
 
 	@Id
 	private Integer id;
@@ -65,32 +72,22 @@ public class Customer implements ICustomerRewards {
 	public void setCustomerTransactions(List<CustomerTransaction> customerTransactions) {
 		this.customerTransactions = customerTransactions;
 	}
-	public Long getTotalRewardPoints() {
-		Long totalRewardPoints = 0L;
-		for (CustomerTransaction customerTransaction : this.customerTransactions) {
-			totalRewardPoints += customerTransaction.getRewardPoints();
-		}
-		return totalRewardPoints;
-		
-	}
 	public HashMap<String, Long> getMonthlyRewardPoints() {
-		this.monthlyRewardPoints = new HashMap<> ();
-		for (CustomerTransaction customerTransaction : this.customerTransactions) {
-			String month = customerTransaction.getTransactionDate().getMonth().toString();
-			Long monthlyPoints = this.monthlyRewardPoints.get(month);
-			if( this.monthlyRewardPoints.containsKey(month)) {
-				this.monthlyRewardPoints.put(month, Long.valueOf(monthlyPoints + customerTransaction.getRewardPoints()));
-			} else {
-				this.monthlyRewardPoints.put(month, Long.valueOf(customerTransaction.getRewardPoints()));
-			}
-		}
-		return this.monthlyRewardPoints;
+		return monthlyRewardPoints;
 	}
-	public Long getTotalPurchaseAmount() {
-		Long totalPurchaseAmount = 0L;
-		for (CustomerTransaction customerTransaction : this.customerTransactions) {
-			totalPurchaseAmount += customerTransaction.getAmount();
-		}
+	public long getTotalRewardPoints() {
+		return totalRewardPoints;
+	}
+	public long getTotalPurchaseAmount() {
 		return totalPurchaseAmount;
+	}
+	public void setMonthlyRewardPoints(HashMap<String, Long> monthlyRewardPoints) {
+		this.monthlyRewardPoints = monthlyRewardPoints;
+	}
+	public void setTotalRewardPoints(long totalRewardPoints) {
+		this.totalRewardPoints = totalRewardPoints;
+	}
+	public void setTotalPurchaseAmount(long totalPurchaseAmount) {
+		this.totalPurchaseAmount = totalPurchaseAmount;
 	}
 }
