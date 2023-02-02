@@ -23,6 +23,9 @@ public class RewardsServiceImpl implements RewardsService {
 	@Autowired
 	private CustomerRepository customerRepository;
 	
+	@Autowired
+	private CustomerTransactionRepository customerTransactionRepository;
+	
 	/**
 	* Get all the customers in the application.  
 	* 
@@ -51,24 +54,79 @@ public class RewardsServiceImpl implements RewardsService {
 		return customer;
 	}
 	
+	/**
+	* Returns the customers that were added 
+	*
+	* @param  customers  a list of customers that need to be added
+	* @return     List of Customer objects that were added
+	*/
 	public List<Customer> addCustomers(List<Customer> customers) {
-		// TODO Auto-generated method stub
-		return null;
+		return customerRepository.saveAll(customers);
 	}
 
-	public Customer updateCustomer(Customer customer, Long id) {
-		// TODO Auto-generated method stub
-		return null;
+	/**
+	* Updates the customer that is identified by the id that is passed based on 
+	* the customer information that is provided in the request body
+	*
+	* @param  updatedCustomer  customer information to be updated
+	* @param  id  id of the customer that this method returns
+	* @return     Customer object that matches the id
+	*/
+	public Customer updateCustomer(Customer updatedCustomer, Integer id) {
+		return customerRepository.findById(id)
+			      .map(customer -> {
+			        customer.setFirstName(updatedCustomer.getFirstName());
+			        customer.setLastName(updatedCustomer.getLastName());
+			        return customerRepository.save(customer);
+			      })
+			      .orElseGet(() -> {
+			    	  updatedCustomer.setId(id);
+			        return customerRepository.save(updatedCustomer);
+			      });
+		
 	}
 
-	public List<Customer> addCustomerTransactions(List<CustomerTransaction> customerTransactions) {
-		// TODO Auto-generated method stub
-		return null;
+	/**
+	* Adds customer transactions 
+	*
+	* @param  customerTransactions  a list of customer transactions
+	* 
+	* @return     Customer object that matches the id
+	*/
+	public List<CustomerTransaction> addCustomerTransactions(List<CustomerTransaction> customerTransactions, Integer customerId) {
+		 
+		return customerRepository.findById(customerId)
+		 	.map(customer -> {
+				customerTransactions.forEach(customerTransaction -> {
+					customerTransaction.setCustomer(customer);
+				});
+				return customerTransactionRepository.saveAll(customerTransactions);
+			})
+		 	.orElseGet(() -> {
+		 		return null;
+		 	});
+		 
+		
 	}
 
-	public Customer updateCustomerTransaction(CustomerTransaction customerTransaction, Long id) {
-		// TODO Auto-generated method stub
-		return null;
+	public CustomerTransaction updateCustomerTransaction(CustomerTransaction updatedCustomerTransaction, Integer id) {
+		return customerTransactionRepository.findById(id)
+				.map(customerTransaction -> {
+					if (updatedCustomerTransaction.getDescription() != null) {
+						customerTransaction.setDescription(updatedCustomerTransaction.getDescription());
+					}
+					if (updatedCustomerTransaction.getAmount() != null) {
+						customerTransaction.setAmount(updatedCustomerTransaction.getAmount());
+					}
+					if (updatedCustomerTransaction.getTransactionDate() != null) {
+						customerTransaction.setTransactionDate(updatedCustomerTransaction.getTransactionDate());
+					}
+					return customerTransactionRepository.save(customerTransaction);
+				})
+				.orElseGet(() -> {
+			    	  updatedCustomerTransaction.setId(id);
+			        return customerTransactionRepository.save(updatedCustomerTransaction);
+			      });
 	}
 	
 	/**

@@ -33,8 +33,8 @@ public class RewardsController {
 	public List<Customer>getCustomerAll() {
 		return rewardsService.getCustomerAll();
 	}
-	@GetMapping(value = "/customer/{Id}")
-	public Optional<Customer>getCustomer(@PathVariable("Id") Integer id) {
+	@GetMapping(value = "/customer/{id}")
+	public Optional<Customer>getCustomer(@PathVariable("id") Integer id) {
 		return rewardsService.getCustomerById(id);
 	}
 	@PostMapping("/customers/add")
@@ -42,15 +42,15 @@ public class RewardsController {
 		return rewardsService.addCustomers(customers);
 	}
 	@PutMapping("/customer/{id}")
-	public Customer updateCustomer(@RequestBody Customer customer, @PathVariable Long id) {
+	public Customer updateCustomer(@RequestBody Customer customer, @PathVariable Integer id) {
 		return rewardsService.updateCustomer(customer, id);
 	}
-	@PostMapping("/customer/transactions/add")
-	public List<Customer> addCustomerTransactions(@RequestBody List<CustomerTransaction> customerTransactions) {
-		return rewardsService.addCustomerTransactions(customerTransactions);
+	@PostMapping("/customer/{customerId}/transactions/add")
+	public List<CustomerTransaction> addCustomerTransactions(@RequestBody List<CustomerTransaction> customerTransactions, @PathVariable Integer customerId) {
+		return rewardsService.addCustomerTransactions(customerTransactions, customerId);
 	}
 	@PutMapping("/customer/transaction/{id}")
-	public Customer updateCustomerTransaction(@RequestBody CustomerTransaction customerTransaction, @PathVariable Long id) {
+	public CustomerTransaction updateCustomerTransaction(@RequestBody CustomerTransaction customerTransaction, @PathVariable Integer id) {
 		return rewardsService.updateCustomerTransaction(customerTransaction, id);
 	}
 
